@@ -15,7 +15,7 @@ export default function NewMatchLive() {
         .then(function(stream) {
             if (videoRef && videoRef.current) {
                 (videoRef.current as HTMLVideoElement).srcObject = stream;
-                // (videoRef.current as HTMLVideoElement).play();
+                (videoRef.current as HTMLVideoElement).play();
             }
         })
         .catch(function(error) {
