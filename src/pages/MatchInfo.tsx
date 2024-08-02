@@ -14,7 +14,7 @@ export default function MatchInfo() {
   const videoRef: MutableRefObject<HTMLVideoElement | null> = useRef(null);
   const [match, setMatch] = useState<Match | null>(null);
   const location = useLocation();
-  const { id: match_id } = useParams();
+//   const { id: match_id } = useParams();
 
   useEffect(() => {
     if (location.state && location.state.match) {

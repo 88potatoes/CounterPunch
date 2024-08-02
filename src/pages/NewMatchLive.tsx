@@ -2,6 +2,7 @@ import FighterCard from "@/components/FighterCard";
 import ScoreCard from "@/components/ScoreCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
+import { Fighter } from "@/types/types";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 /**
  * The page for the Main view with the camera and the live scoring
@@ -29,8 +30,8 @@ export default function NewMatchLive() {
     const [fighter1hits, setFighter1hits] = useState(0);
     const [fighter2thrown, setFighter2thrown] = useState(0);
     const [fighter2hits, setFighter2hits] = useState(0);
-    const [fighter1, setFighter1] = useState(fighterPreset1);
-    const [fighter2, setFighter2] = useState(fighterPreset2);
+    const [fighter1, setFighter1] = useState<Fighter | null>(null);
+    const [fighter2, setFighter2] = useState<Fighter | null>(null);
 
     const incrementF1thrown = () => {
         setFighter1thrown(fighter1thrown + 1);
@@ -77,7 +78,14 @@ export default function NewMatchLive() {
         .catch(function(error) {
             console.error("Error accessing the camera:", error);
         });
+
+        setFighter1(fighterPreset1);
+        setFighter2(fighterPreset2);
     }, []);
+
+    if (fighter1 === null || fighter2 == null) {
+        return <h1>Error</h1>
+    }
 
     return <>
         <div className="bg-black flex justify-center">
