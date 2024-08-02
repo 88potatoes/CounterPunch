@@ -1,4 +1,5 @@
 import FighterCard from "@/components/FighterCard";
+import ScoreCard from "@/components/ScoreCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { MutableRefObject, useEffect, useRef } from "react";
@@ -37,13 +38,7 @@ export default function NewMatchLive() {
         <div className="flex flex-row justify-around">
             <Card className="p-2">
                 <FighterCard/>
-                <div className="pt-2">
-                    
-                    <CardTitle>Score</CardTitle>
-                    <CardDescription>Punches Thrown: 10</CardDescription>
-                    <CardDescription>Punches Hit: 10</CardDescription>
-                    <CardDescription>Punches Hit %: 10</CardDescription>
-                </div>
+                <ScoreCard thrown={10} hits={10}/>
                 <div>
                     <div className="mt-2">
                         <CardTitle className="text-sm">Punches Thrown</CardTitle>
