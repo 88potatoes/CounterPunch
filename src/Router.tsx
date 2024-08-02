@@ -1,8 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Home from "@/Home.tsx"
-import NewMatch from './NewMatch';
-import Match from './Match';
-import NewMatchLive from './NewMatchLive';
+import Home from "./pages/Home.tsx"
+import NewMatch from './pages/NewMatch';
+import Match from './pages/Match';
+import NewMatchLive from './pages/NewMatchLive';
 import RootLayout from './layouts/root-layout';
 import DashboardLayout from './layouts/dashboard-layout';
 

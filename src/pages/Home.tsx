@@ -6,8 +6,8 @@ import {
     CardHeader,
     CardTitle,
   } from "@/components/ui/card";  
-import { Button } from "./components/ui/button";
-import FighterCard from "./components/FighterCard";
+import { Button } from "../components/ui/button";
+import FighterCard from "../components/FighterCard";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {

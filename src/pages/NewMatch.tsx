@@ -1,6 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "./components/ui/button";
+import { Button } from "../components/ui/button";
 
+/**
+ * Creates a new math and then directs to NewMatchLive
+ * @returns 
+ */
 export default function NewMatch() {
     const navigate = useNavigate();
     
@@ -9,9 +13,6 @@ export default function NewMatch() {
     }
 
     return <>
-        <nav className="w-full bg-slate-800 h-[5em] flex justify-center">
-            <div className="text-4xl">CounterPunch</div>
-        </nav>
         <div>
             <Button onClick={goToNewMatchLive}>Submit form and Go next</Button>
         </div>

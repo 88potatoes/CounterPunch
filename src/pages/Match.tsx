@@ -5,13 +5,10 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";  
-import FighterCard from "./components/FighterCard";
+import FighterCard from "../components/FighterCard";
 
 export default function Match() {
     return <>
-        <nav className="w-full bg-slate-800 h-[5em] flex justify-center">
-            <div className="text-4xl">CounterPunch</div>
-        </nav>
         <div>
             <Card className="m-3">
                 <CardHeader>
