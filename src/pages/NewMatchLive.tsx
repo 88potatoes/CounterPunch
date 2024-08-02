@@ -1,6 +1,6 @@
 import FighterCard from "@/components/FighterCard";
 import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardFooter, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { MutableRefObject, useEffect, useRef } from "react";
 /**
  * The page for the Main view with the camera and the live scoring
