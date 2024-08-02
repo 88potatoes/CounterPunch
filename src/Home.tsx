@@ -22,9 +22,6 @@ export default function Home() {
     }
     
     return <>
-        <nav className="w-full bg-slate-800 h-[5em] flex justify-center">
-            <div className="text-4xl">CounterPunch</div>
-        </nav>
         <div>
             <Button onClick={goToNewMatch}>New Match</Button>
         </div>
