@@ -5,6 +5,7 @@ import Match from './pages/Match';
 import NewMatchLive from './pages/NewMatchLive';
 import RootLayout from './layouts/root-layout';
 import DashboardLayout from './layouts/dashboard-layout';
+import MatchInfo from './pages/MatchInfo.tsx';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: '/match',
         element: <Match />,
+      },
+      {
+        path: '/match/:id', 
+        element: <MatchInfo />
       },
       {
         element: <DashboardLayout />,

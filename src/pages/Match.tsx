@@ -4,8 +4,7 @@ import {
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";  
-import FighterCard from "../components/FighterCard";
+} from "@/components/ui/card";
 
 export default function Match() {
     return <>
@@ -17,14 +16,14 @@ export default function Match() {
                 </CardHeader>
                 <CardContent className="flex flex-row justify-between">
                     <div>
-                        <FighterCard/>
+                        {/* <FighterCard/> */}
                         <CardTitle className="mt-4">Score</CardTitle>
                         <CardDescription>Punches Thrown: 10</CardDescription>
                         <CardDescription>Punches Hit: 10</CardDescription>
                         <CardDescription>Punches Hit %: 10</CardDescription>
                     </div>
                     <div>
-                        <FighterCard/>
+                        {/* <FighterCard/> */}
                         <CardTitle className="mt-4">Score</CardTitle>
                         <CardDescription>Punches Thrown: 10</CardDescription>
                         <CardDescription>Punches Hit: 10</CardDescription>

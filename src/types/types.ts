@@ -11,6 +11,7 @@ export interface Match {
 }
 
 export interface Fighter {
+    id: number, 
     name: string,
     country: string,
     avatarURL: string
