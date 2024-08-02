@@ -6,6 +6,7 @@ import { MutableRefObject, useEffect, useRef } from "react";
  * The page for the Main view with the camera and the live scoring
  * @returns 
  */
+//
 export default function NewMatchLive() {
     const videoRef: MutableRefObject<HTMLVideoElement | null> = useRef(null);
 
