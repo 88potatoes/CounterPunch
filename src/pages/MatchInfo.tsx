@@ -1,7 +1,7 @@
 import FighterCard from "@/components/FighterCard";
 import ScoreCard from "@/components/ScoreCard";
 import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { Match } from "@/types/types";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
@@ -22,7 +22,7 @@ export default function MatchInfo() {
     } else {
       // TODO : to add the fetch
     }
-  }, []);
+  }, [location.state]);
 
   if (match === null) {
     return (
