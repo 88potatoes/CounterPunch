@@ -1,7 +1,6 @@
 import FighterCard from "@/components/FighterCard";
 import ScoreCard from "@/components/ScoreCard";
-import { Button } from "@/components/ui/button";
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Match } from "@/types/types";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -44,22 +43,6 @@ export default function MatchInfo() {
             thrown={match.scores.fighter1.thrown}
             hits={match.scores.fighter1.hits}
           />
-          <div>
-            <div className="mt-2">
-              <CardTitle className="text-sm">Punches Thrown</CardTitle>
-              <div>
-                <Button>+</Button>
-                <Button>-</Button>
-              </div>
-            </div>
-            <div className="mt-2">
-              <CardTitle className="text-sm">Punches Hit</CardTitle>
-              <div>
-                <Button>+</Button>
-                <Button>-</Button>
-              </div>
-            </div>
-          </div>
         </Card>
 
         {/* DUPLICATE */}
@@ -69,22 +52,6 @@ export default function MatchInfo() {
             thrown={match.scores.fighter2.thrown}
             hits={match.scores.fighter2.hits}
           />
-          <div>
-            <div className="mt-2">
-              <CardTitle className="text-sm">Punches Thrown</CardTitle>
-              <div>
-                <Button>+</Button>
-                <Button>-</Button>
-              </div>
-            </div>
-            <div className="mt-2">
-              <CardTitle className="text-sm">Punches Hit</CardTitle>
-              <div>
-                <Button>+</Button>
-                <Button>-</Button>
-              </div>
-            </div>
-          </div>
         </Card>
       </div>
     </>
