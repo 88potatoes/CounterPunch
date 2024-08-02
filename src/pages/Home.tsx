@@ -83,8 +83,8 @@ export default function Home() {
             <Button onClick={goToNewMatch}>New Match</Button>
         </div>
         <div>
-            {matches?.map(match => {
-                return <MatchCard match={match}/>
+            {matches?.map((match, index) => {
+                return <MatchCard match={match} key={index}/>
             })}
         </div>
     </>
