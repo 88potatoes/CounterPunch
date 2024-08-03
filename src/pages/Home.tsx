@@ -33,13 +33,15 @@ export default function Home() {
         <div className="mx-3 mt-4">
             <h1 className="text-4xl"><b>Matches</b></h1>
         </div>
-        <div>
+        <div className="mx-3">
+            <div className="mx-3">
             {isLoading &&
                 <h1>Getting matches...</h1>
             }
             {error && 
                 <h2>An error occurred</h2>
             }
+            </div>
             {Array.isArray(matches) && matches?.map((match : Match, index) => {
                 return <MatchCard match={match} key={index}/>
             })}
