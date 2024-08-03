@@ -58,7 +58,7 @@ export default function NewMatchLive() {
   };
 
   const goToHome = () => {
-    navigate("/");
+    navigate("/home");
   };
 
   const getFgen = (fid: number) => {

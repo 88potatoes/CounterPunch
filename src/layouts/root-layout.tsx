@@ -27,7 +27,7 @@ export default function RootLayout() {
       routerReplace={(to) => navigate(to, { replace: true })}
       publishableKey={PUBLISHABLE_KEY}
     >
-      <header className="header flex justify-between px-3">
+      <header className="header flex justify-between px-3 items-center">
           <div className=''>
             <img src="/Discord-logo.svg" alt="Counter Punch Logo" className='h-[100px]'/>
           </div>
