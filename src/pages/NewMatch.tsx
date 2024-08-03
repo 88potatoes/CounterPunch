@@ -3,6 +3,7 @@ import { Button } from "../components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import apiClient from "@/main";
 
 /**
  * Creates a new math and then directs to NewMatchLive
@@ -26,24 +27,52 @@ export default function NewMatch() {
   const [fighter1id, setFighter1id] = useState(1);
   const [fighter2id, setFighter2id] = useState(2);
 
-  const goToNewMatchLive = () => {
+  const submitNewMatchInfo = async () => {
+    if (matchName === "") {
+      return;
+    }
+    if (fighter1id === null || fighter1id === undefined) {
+      return;
+    }
+    if (fighter2id === null || fighter2id === undefined) {
+      return;
+    }
+
+    const response = await apiClient.post("/match",  {
+        title: matchName,
+        datetime: "2023-08-18T18:00:00",
+        fighter1: {
+            id: fighter1id
+        },
+        fighter2: {
+            id: fighter2id
+        },
+    });
+    const matches = response.data;
+
+    if (!("id" in matches)) {
+      alert("Failed to create new match.");
+      return;
+    }
+
     navigate("/newMatchLive", {
       state: {
-        fighter1: {
-          id: fighter1id,
-        },
+        title: matchName,
+        datetime: "2023-08-18T18:00:00",
+        fighter1: { id: fighter1id },
         fighter2: { id: fighter2id },
       },
     });
   };
-  const changeMatchName = (e) => {
+  
+  const changeMatchName = (e : React.ChangeEvent<HTMLInputElement>) => {
     setMatchName(e.target.value);
   };
-  const changeFighter1id = (e) => {
-    setFighter1id(e.target.value);
+  const changeFighter1id = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setFighter1id(Number(e.target.value));
   };
-  const changeFighter2id = (e) => {
-    setFighter1id(e.target.value);
+  const changeFighter2id = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setFighter2id(Number(e.target.value));
   };
 
   return (
@@ -75,7 +104,7 @@ export default function NewMatch() {
             onChange={changeFighter2id}
           />
           <div className="py-2">
-            <Button onClick={goToNewMatchLive}>Create Match</Button>
+            <Button onClick={submitNewMatchInfo}>Create Match</Button>
           </div>
         </Card>
       </div>

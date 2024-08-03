@@ -3,42 +3,29 @@ import ScoreCard from "@/components/ScoreCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import apiClient from "@/main";
-import { Fighter } from "@/types/types";
+import { Fighter, PrimitiveMatch } from "@/types/types";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import { useLocation } from "react-router-dom";
 /**
  * The page for the Main view with the camera and the live scoring
  * @returns
  */
 //
-
-const fighterPreset1 = {
-  id: 1,
-  name: "Fighter Uno",
-  country: "Australia",
-  avatarURL:
-    "https://wallpapers.com/images/hd/pfp-pictures-t0vlqv5glu7xo4mb.jpg",
-};
-const fighterPreset2 = {
-  id: 2,
-  name: "Fighter Duo",
-  country: "New Zealand",
-  avatarURL:
-    "https://wallpapers-clan.com/wp-content/uploads/2023/01/anime-aesthetic-boy-pfp-3.jpg",
-};
-
 export default function NewMatchLive() {
   const videoRef: MutableRefObject<HTMLVideoElement | null> = useRef(null);
   const [fighter1thrown, setFighter1thrown] = useState(0);
   const [fighter1hits, setFighter1hits] = useState(0);
   const [fighter2thrown, setFighter2thrown] = useState(0);
   const [fighter2hits, setFighter2hits] = useState(0);
-  const [fighter1, setFighter1] = useState<Fighter | null>(null);
-  const [fighter2, setFighter2] = useState<Fighter | null>(null);
+  // const [fighter1, setFighter1] = useState<Fighter | null>(null);
+  // const [fighter2, setFighter2] = useState<Fighter | null>(null);
   const [streamOn, setStreamOn] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const [matchInfo, setMatchInfo] = useState<PrimitiveMatch | null>(null);
 
   const incrementF1thrown = () => {
     setFighter1thrown(fighter1thrown + 1);
@@ -74,9 +61,20 @@ export default function NewMatchLive() {
     navigate("/");
   };
 
+  const getFgen = (fid: number) => {
+    return async () => {
+      console.log(fid);
+      const response = await apiClient.get(`/fighter/${fid}`);
+      console.log(response.data);
+      return response.data;
+    };
+  };
+  
   useEffect(() => {
+    if (location.state) {
+      setMatchInfo(location.state);
+    }
 
-    
     // Check for browser support
     if (!navigator.mediaDevices) {
       console.log("Your browser doesn't support camera access");
@@ -115,35 +113,74 @@ export default function NewMatchLive() {
           const frame = canvas.toDataURL("image/jpeg");
 
           console.log("Sending frame:", frame);
-          
-          apiClient.post('/process_frame', {
-            image: frame
-          })
-            // .then((data) => {
-            //   console.log("Frame processed:", data);
-            // })
-            // .catch((error) => {
-            //   console.error("Error:", error);
-            // });
+
+          apiClient.post("/process_frame", {
+            image: frame,
+          });
         }
       }
     }
 
     // Send frames at 30 FPS
-    const intervalId = setInterval(sendFrame, 1000 / 30);
+    // const intervalId = setInterval(sendFrame, 1000 / 30);
 
     // Cleanup interval on component unmount
-    return () => clearInterval(intervalId);
-  }, []);
+    // return () => clearInterval(intervalId);
+  }, [location.state]);
 
-  if (fighter1 === null || fighter2 == null) {
-    return <h1>Error</h1>;
+  useEffect(() => {
+    console.log(matchInfo?.fighter1.id);
+    console.log(matchInfo?.fighter2.id);
+  }, [matchInfo]);
+
+  const { isLoading : isLoadingF1, error: error1, data : fighter1 } = useQuery({
+    queryKey: ["getF1"],
+    queryFn: () => getFgen(matchInfo?.fighter1.id ?? 0)(),
+    enabled: !!matchInfo
+  });
+  
+  const { isLoading : isLoadingF2, error: error2, data : fighter2 } = useQuery({
+    queryKey: ["getF2"],
+    queryFn: () => getFgen(matchInfo?.fighter2.id ?? 0)(),
+    enabled: !!matchInfo
+  });
+
+  // const { isLoading : isLoadingF1, error: error1, data : fighter1 } = useQuery({
+  //   queryKey: ["getF1"],
+  //   queryFn: () => getFgen(matchInfo.fighter1.id)(),
+  // });
+
+  // const { isLoading : isLoadingF2, error: error2, data : fighter2 } = useQuery({
+  //   queryKey: ["getF2"],
+  //   queryFn: () => getFgen(matchInfo.fighter2.id)(),
+  // });
+
+  
+  if (isLoadingF1 || isLoadingF2) {
+    return <div>Loading...</div>;
+  }
+  
+  if (error1 || error2) {
+    return <div>Error loading fighter data</div>;
+  }
+  
+  if (!fighter1 || !fighter2) {
+    return <div>No fighter data available</div>;
+  }
+
+  if (matchInfo === null) {
+    return <div>Loading</div>
   }
 
   return (
     <>
       <div>
         <Button onClick={goToHome}></Button>
+      </div>
+      <div className="m-3">
+        <div className="p-2">
+          <h1>{matchInfo.title}</h1>
+        </div>
       </div>
       <div className="bg-black flex justify-center">
         <video ref={videoRef} className="bg-slate-700"></video>
@@ -195,7 +232,7 @@ export default function NewMatchLive() {
         <Card className="flex justify-around flex-col mt-4 w-[80%]">
           {streamOn && (
             <Button className="bg-red-700" onClick={toggleStreamOn}>
-              Stop CounterPunch.
+              Stop CounterPunch
             </Button>
           )}
           {!streamOn && (
@@ -203,7 +240,7 @@ export default function NewMatchLive() {
               className="bg-green-700 text-white"
               onClick={toggleStreamOn}
             >
-              Start CounterPunch.
+              Start CounterPunch
             </Button>
           )}
         </Card>

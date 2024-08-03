@@ -21,3 +21,14 @@ export interface FighterScore {
     thrown: number,
     hits: number
 }
+
+export interface PrimitiveMatch {
+    title: string,
+    datetime: string,
+    fighter1: {
+        id: number
+    },
+    fighter2: {
+        id: number
+    }
+}
