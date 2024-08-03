@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
+const VITE_STREAM_LINK = import.meta.env.VITE_STREAM_LINK;
 /**
  * The page for the Main view with the camera and the live scoring
  * @returns
@@ -175,11 +176,19 @@ export default function NewMatchLive() {
       </Card>
       <div className="m-3">
         <div className="p-2">
-          <h1 className="text-4xl text-"><b>{matchInfo.title}</b></h1>
+          <h1 className="text-4xl text-">
+            <b>{matchInfo.title}</b>
+          </h1>
         </div>
       </div>
       <div className="bg-black flex justify-center">
         <video ref={videoRef} className="bg-slate-700"></video>
+      </div>
+      <div className="bg-black flex justify-center">
+        <img
+          src={VITE_STREAM_LINK}
+          alt="Live Video Feed"
+        />
       </div>
       <div className="flex flex-row justify-around mx-3">
         <Card className="p-3 mt-3">
@@ -190,14 +199,18 @@ export default function NewMatchLive() {
               <CardTitle className="text-sm">Punches Thrown</CardTitle>
               <div>
                 <Button onClick={incrementF1thrown}>+</Button>
-                <Button onClick={decrementF1thrown} className="mx-1">-</Button>
+                <Button onClick={decrementF1thrown} className="mx-1">
+                  -
+                </Button>
               </div>
             </div>
             <div className="mt-2">
               <CardTitle className="text-sm">Punches Hit</CardTitle>
               <div>
                 <Button onClick={incrementF1hits}>+</Button>
-                <Button onClick={decrementF1hits} className="mx-1">-</Button>
+                <Button onClick={decrementF1hits} className="mx-1">
+                  -
+                </Button>
               </div>
             </div>
           </div>
@@ -211,14 +224,18 @@ export default function NewMatchLive() {
               <CardTitle className="text-sm">Punches Thrown</CardTitle>
               <div>
                 <Button onClick={incrementF2thrown}>+</Button>
-                <Button onClick={decrementF2thrown} className="mx-1">-</Button>
+                <Button onClick={decrementF2thrown} className="mx-1">
+                  -
+                </Button>
               </div>
             </div>
             <div className="mt-2">
               <CardTitle className="text-sm">Punches Hit</CardTitle>
               <div>
                 <Button onClick={incrementF2hits}>+</Button>
-                <Button onClick={decrementF2hits} className="mx-1">-</Button>
+                <Button onClick={decrementF2hits} className="mx-1">
+                  -
+                </Button>
               </div>
             </div>
           </div>
