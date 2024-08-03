@@ -4,7 +4,6 @@ import NewMatch from "./pages/NewMatch";
 import Match from "./pages/Match";
 import NewMatchLive from "./pages/NewMatchLive";
 import RootLayout from "./layouts/root-layout";
-import DashboardLayout from "./layouts/dashboard-layout";
 import MatchInfo from "./pages/MatchInfo.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
 import Landing from "./pages/Landing.tsx";

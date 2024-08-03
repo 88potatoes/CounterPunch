@@ -4,7 +4,6 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import apiClient from "@/main";
-import { Separator } from "@/components/ui/separator";
 
 /**
  * Creates a new math and then directs to NewMatchLive

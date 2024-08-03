@@ -5,7 +5,6 @@ import { Match } from "@/types/types";
 import apiClient from "@/main";
 import { useQuery } from '@tanstack/react-query';
 import { Card } from "@/components/ui/card";
-import { Separator } from "@radix-ui/react-separator";
 
 export default function Home() {
     const navigate = useNavigate();

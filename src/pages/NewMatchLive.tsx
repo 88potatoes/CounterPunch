@@ -3,9 +3,8 @@ import ScoreCard from "@/components/ScoreCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import apiClient from "@/main";
-import { Fighter, PrimitiveMatch } from "@/types/types";
+import { PrimitiveMatch } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
@@ -122,10 +121,10 @@ export default function NewMatchLive() {
     }
 
     // Send frames at 30 FPS
-    // const intervalId = setInterval(sendFrame, 1000 / 30);
+    const intervalId = setInterval(sendFrame, 1000 / 30);
 
     // Cleanup interval on component unmount
-    // return () => clearInterval(intervalId);
+    return () => clearInterval(intervalId);
   }, [location.state]);
 
   useEffect(() => {
