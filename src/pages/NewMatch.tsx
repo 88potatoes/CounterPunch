@@ -4,6 +4,7 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import apiClient from "@/main";
+import { Separator } from "@/components/ui/separator";
 
 /**
  * Creates a new math and then directs to NewMatchLive
@@ -64,7 +65,7 @@ export default function NewMatch() {
       },
     });
   };
-  
+
   const changeMatchName = (e : React.ChangeEvent<HTMLInputElement>) => {
     setMatchName(e.target.value);
   };
@@ -75,10 +76,20 @@ export default function NewMatch() {
     setFighter2id(Number(e.target.value));
   };
 
+  const goToHome = () => {
+    navigate('/home');
+  }
+
   return (
     <>
       <div>
         <Card className="mx-3 p-3">
+            <Button onClick={goToHome}>Home</Button>
+        </Card>
+        <div className="mx-3 mt-4 mb-3">
+            <h1 className="text-4xl"><b>Create</b></h1>
+        </div>
+        <Card className="mx-3 p-6">
           <CardTitle>Match Name</CardTitle>
           <Input
             type="text"

@@ -69,7 +69,7 @@ export default function NewMatchLive() {
       return response.data;
     };
   };
-  
+
   useEffect(() => {
     if (location.state) {
       setMatchInfo(location.state);
@@ -133,60 +133,57 @@ export default function NewMatchLive() {
     console.log(matchInfo?.fighter2.id);
   }, [matchInfo]);
 
-  const { isLoading : isLoadingF1, error: error1, data : fighter1 } = useQuery({
+  const {
+    isLoading: isLoadingF1,
+    error: error1,
+    data: fighter1,
+  } = useQuery({
     queryKey: ["getF1"],
     queryFn: () => getFgen(matchInfo?.fighter1.id ?? 0)(),
-    enabled: !!matchInfo
+    enabled: !!matchInfo,
   });
-  
-  const { isLoading : isLoadingF2, error: error2, data : fighter2 } = useQuery({
+
+  const {
+    isLoading: isLoadingF2,
+    error: error2,
+    data: fighter2,
+  } = useQuery({
     queryKey: ["getF2"],
     queryFn: () => getFgen(matchInfo?.fighter2.id ?? 0)(),
-    enabled: !!matchInfo
+    enabled: !!matchInfo,
   });
 
-  // const { isLoading : isLoadingF1, error: error1, data : fighter1 } = useQuery({
-  //   queryKey: ["getF1"],
-  //   queryFn: () => getFgen(matchInfo.fighter1.id)(),
-  // });
-
-  // const { isLoading : isLoadingF2, error: error2, data : fighter2 } = useQuery({
-  //   queryKey: ["getF2"],
-  //   queryFn: () => getFgen(matchInfo.fighter2.id)(),
-  // });
-
-  
   if (isLoadingF1 || isLoadingF2) {
     return <div>Loading...</div>;
   }
-  
+
   if (error1 || error2) {
     return <div>Error loading fighter data</div>;
   }
-  
+
   if (!fighter1 || !fighter2) {
     return <div>No fighter data available</div>;
   }
 
   if (matchInfo === null) {
-    return <div>Loading</div>
+    return <div>Loading</div>;
   }
 
   return (
     <>
-      <div>
-        <Button onClick={goToHome}></Button>
-      </div>
+      <Card className="mx-3 p-3">
+        <Button onClick={goToHome}>Home</Button>
+      </Card>
       <div className="m-3">
         <div className="p-2">
-          <h1>{matchInfo.title}</h1>
+          <h1 className="text-4xl text-"><b>{matchInfo.title}</b></h1>
         </div>
       </div>
       <div className="bg-black flex justify-center">
         <video ref={videoRef} className="bg-slate-700"></video>
       </div>
-      <div className="flex flex-row justify-around">
-        <Card className="p-2">
+      <div className="flex flex-row justify-around mx-3">
+        <Card className="p-3 mt-3">
           <FighterCard fighter={fighter1} />
           <ScoreCard thrown={fighter1thrown} hits={fighter1hits} />
           <div>
@@ -194,20 +191,20 @@ export default function NewMatchLive() {
               <CardTitle className="text-sm">Punches Thrown</CardTitle>
               <div>
                 <Button onClick={incrementF1thrown}>+</Button>
-                <Button onClick={decrementF1thrown}>-</Button>
+                <Button onClick={decrementF1thrown} className="mx-1">-</Button>
               </div>
             </div>
             <div className="mt-2">
               <CardTitle className="text-sm">Punches Hit</CardTitle>
               <div>
                 <Button onClick={incrementF1hits}>+</Button>
-                <Button onClick={decrementF1hits}>-</Button>
+                <Button onClick={decrementF1hits} className="mx-1">-</Button>
               </div>
             </div>
           </div>
         </Card>
 
-        <Card className="p-2">
+        <Card className="p-3 mt-3">
           <FighterCard fighter={fighter2} />
           <ScoreCard thrown={fighter2thrown} hits={fighter2hits} />
           <div>
@@ -215,14 +212,14 @@ export default function NewMatchLive() {
               <CardTitle className="text-sm">Punches Thrown</CardTitle>
               <div>
                 <Button onClick={incrementF2thrown}>+</Button>
-                <Button onClick={decrementF2thrown}>-</Button>
+                <Button onClick={decrementF2thrown} className="mx-1">-</Button>
               </div>
             </div>
             <div className="mt-2">
               <CardTitle className="text-sm">Punches Hit</CardTitle>
               <div>
                 <Button onClick={incrementF2hits}>+</Button>
-                <Button onClick={decrementF2hits}>-</Button>
+                <Button onClick={decrementF2hits} className="mx-1">-</Button>
               </div>
             </div>
           </div>
