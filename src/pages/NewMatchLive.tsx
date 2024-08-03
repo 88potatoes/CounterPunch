@@ -2,8 +2,11 @@ import FighterCard from "@/components/FighterCard";
 import ScoreCard from "@/components/ScoreCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
+import apiClient from "@/main";
 import { Fighter } from "@/types/types";
+import axios from "axios";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 /**
  * The page for the Main view with the camera and the live scoring
  * @returns
@@ -34,6 +37,8 @@ export default function NewMatchLive() {
   const [fighter1, setFighter1] = useState<Fighter | null>(null);
   const [fighter2, setFighter2] = useState<Fighter | null>(null);
   const [streamOn, setStreamOn] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const incrementF1thrown = () => {
     setFighter1thrown(fighter1thrown + 1);
@@ -63,31 +68,72 @@ export default function NewMatchLive() {
 
   const toggleStreamOn = () => {
     setStreamOn(!streamOn);
-  }
+  };
 
-  // camera
+  const goToHome = () => {
+    navigate("/");
+  };
+
   useEffect(() => {
-    // check for browser support
+
+    
+    // Check for browser support
     if (!navigator.mediaDevices) {
       console.log("Your browser doesn't support camera access");
       return;
     }
 
-    // request browser permission to use camera
+    // Request browser permission to use the camera
     navigator.mediaDevices
       .getUserMedia({ video: true })
       .then(function (stream) {
-        if (videoRef && videoRef.current) {
-          (videoRef.current as HTMLVideoElement).srcObject = stream;
-          (videoRef.current as HTMLVideoElement).play();
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play();
         }
       })
       .catch(function (error) {
         console.error("Error accessing the camera:", error);
       });
 
-    setFighter1(fighterPreset1);
-    setFighter2(fighterPreset2);
+    // Function to send frame to the backend
+    function sendFrame() {
+      if (videoRef.current) {
+        const canvas = document.createElement("canvas");
+        canvas.width = videoRef.current.videoWidth;
+        canvas.height = videoRef.current.videoHeight;
+        const context = canvas.getContext("2d");
+
+        if (context) {
+          context.drawImage(
+            videoRef.current,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+          );
+          const frame = canvas.toDataURL("image/jpeg");
+
+          console.log("Sending frame:", frame);
+          
+          apiClient.post('/process_frame', {
+            image: frame
+          })
+            // .then((data) => {
+            //   console.log("Frame processed:", data);
+            // })
+            // .catch((error) => {
+            //   console.error("Error:", error);
+            // });
+        }
+      }
+    }
+
+    // Send frames at 30 FPS
+    const intervalId = setInterval(sendFrame, 1000 / 30);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   if (fighter1 === null || fighter2 == null) {
@@ -96,6 +142,9 @@ export default function NewMatchLive() {
 
   return (
     <>
+      <div>
+        <Button onClick={goToHome}></Button>
+      </div>
       <div className="bg-black flex justify-center">
         <video ref={videoRef} className="bg-slate-700"></video>
       </div>
@@ -144,8 +193,19 @@ export default function NewMatchLive() {
       </div>
       <div className="flex justify-center">
         <Card className="flex justify-around flex-col mt-4 w-[80%]">
-            {streamOn && <Button className="bg-red-700" onClick={toggleStreamOn}>Stop CounterPunch.</Button>}
-            {!streamOn && <Button className="bg-green-700 text-white" onClick={toggleStreamOn}>Start CounterPunch.</Button>}
+          {streamOn && (
+            <Button className="bg-red-700" onClick={toggleStreamOn}>
+              Stop CounterPunch.
+            </Button>
+          )}
+          {!streamOn && (
+            <Button
+              className="bg-green-700 text-white"
+              onClick={toggleStreamOn}
+            >
+              Start CounterPunch.
+            </Button>
+          )}
         </Card>
       </div>
     </>

@@ -1,8 +1,11 @@
 import { Button } from "../components/ui/button";
 import { useNavigate } from "react-router-dom";
 import MatchCard from "@/components/MatchCard";
-import { useEffect, useState } from "react";
 import { Match } from "@/types/types";
+import apiClient from "@/main";
+import { useQuery } from '@tanstack/react-query';
+import { Card } from "@/components/ui/card";
+
 
 const matchesPreset: Array<Match> = [
     {
@@ -63,27 +66,36 @@ const matchesPreset: Array<Match> = [
 
 export default function Home() {
     const navigate = useNavigate();
-
-    const [matches, setMatches] = useState<Array<Match> | null>(null);
-
-    const getMatches = async () => {
-        setMatches(matchesPreset);
+    const getRecentMatches = async () => {
+        console.log('hi')
+        console.log(apiClient.defaults);
+        const response = await apiClient.get('/matches/recent');
+        return response.data;
     }
-
+    
     const goToNewMatch = () => {
         navigate("/newMatch");
     }
-
-    useEffect(() => {
-        getMatches();
-    }, []);
     
+    const { isLoading, error, data : matches } = useQuery<Match[], Error>({
+        queryKey: ['recent-matches'], 
+        queryFn: getRecentMatches
+    })
+
     return <>
         <div>
-            <Button onClick={goToNewMatch}>New Match</Button>
+            <Card className="mx-3 p-3">
+                <Button onClick={goToNewMatch}>New Match</Button>
+            </Card>
         </div>
         <div>
-            {matches?.map((match, index) => {
+            {isLoading &&
+                <h1>Getting matches...</h1>
+            }
+            {error && 
+                <h2>An error occurred</h2>
+            }
+            {Array.isArray(matches) && matches?.map((match : Match, index) => {
                 return <MatchCard match={match} key={index}/>
             })}
         </div>

@@ -29,7 +29,7 @@ export default function RootLayout() {
     >
       <header className="header flex justify-between px-3">
           <div className=''>
-            <img src="/CounterPunchLogo.svg" alt="Counter Punch Logo" className='h-[100px]'/>
+            <img src="/Discord-logo.svg" alt="Counter Punch Logo" className='h-[100px]'/>
           </div>
           <SignedIn>
             <UserButton />
