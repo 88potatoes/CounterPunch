@@ -1,5 +1,4 @@
 import { LandingHeader } from "@/components/LandingHeader";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 export default function Landing() {
@@ -14,10 +13,6 @@ export default function Landing() {
           <source src="LandingVideo.mp4" type="video/mp4" />
         </video>
       </Card>
-      <div className="flex justify-center py-6 ">
-
-        <Button>Join the Waitlist!</Button>
-      </div>
     </div>
   );
 }
