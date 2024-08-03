@@ -1,46 +1,44 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Home from "./pages/Home.tsx"
-import NewMatch from './pages/NewMatch';
-import Match from './pages/Match';
-import NewMatchLive from './pages/NewMatchLive';
-import RootLayout from './layouts/root-layout';
-import DashboardLayout from './layouts/dashboard-layout';
-import MatchInfo from './pages/MatchInfo.tsx';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Home from "./pages/Home.tsx";
+import NewMatch from "./pages/NewMatch";
+import Match from "./pages/Match";
+import NewMatchLive from "./pages/NewMatchLive";
+import RootLayout from "./layouts/root-layout";
+import DashboardLayout from "./layouts/dashboard-layout";
+import MatchInfo from "./pages/MatchInfo.tsx";
+import ProtectedRoute from "./ProtectedRoute.tsx";
 
 const router = createBrowserRouter([
   {
-    element: <RootLayout/>,
+    element: <RootLayout />,
     children: [
       {
-        path: '/',
-        element: <Home />,
-      },
-      {
-        path: '/newMatch',
-        element: <NewMatch />,
-      },
-      {
-        path: '/newMatchLive',
-        element: <NewMatchLive />,
-      },
-      {
-        path: '/match',
-        element: <Match />,
-      },
-      {
-        path: '/match/:id', 
-        element: <MatchInfo />
-      },
-      {
-        element: <DashboardLayout />,
-        path: "dashboard",
+        element: <ProtectedRoute />,
         children: [
-          // { path: "/dashboard", element: <DashboardPage /> },
-          // { path: "/dashboard/invoices", element: <InvoicesPage /> }
-        ]
-      }
-    ]
-  }
+          {
+            path: "/",
+            element: <Home />,
+          },
+          {
+            path: "/newMatch",
+            element: <NewMatch />,
+          },
+          {
+            path: "/newMatchLive",
+            element: <NewMatchLive />,
+          },
+          {
+            path: "/match",
+            element: <Match />,
+          },
+          {
+            path: "/match/:id",
+            element: <MatchInfo />,
+          },
+        ],
+      },
+    ],
+  },
 ]);
 
 export function Router() {
