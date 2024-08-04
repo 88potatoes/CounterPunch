@@ -184,12 +184,12 @@ export default function NewMatchLive() {
       <div className="bg-black flex justify-center">
         <video ref={videoRef} className="bg-slate-700"></video>
       </div>
-      <div className="bg-black flex justify-center">
+      {/* <div className="bg-black flex justify-center">
         <img
           src={VITE_STREAM_LINK}
           alt="Live Video Feed"
         />
-      </div>
+      </div> */}
       <div className="flex flex-row justify-around mx-3">
         <Card className="p-3 mt-3">
           <FighterCard fighter={fighter1} />
