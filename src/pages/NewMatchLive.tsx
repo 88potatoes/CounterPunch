@@ -26,6 +26,8 @@ export default function NewMatchLive() {
   const navigate = useNavigate();
   const location = useLocation();
   const [matchInfo, setMatchInfo] = useState<PrimitiveMatch | null>(null);
+  const [imageDataUrl, setImageDataUrl] = useState('');
+
 
   const incrementF1thrown = () => {
     setFighter1thrown(fighter1thrown + 1);
@@ -113,6 +115,7 @@ export default function NewMatchLive() {
           const frame = canvas.toDataURL("image/jpeg");
 
           console.log("Sending frame:", frame);
+          setImageDataUrl(frame);
 
           apiClient.post("/process_frame", {
             image: frame,
@@ -184,6 +187,12 @@ export default function NewMatchLive() {
       <div className="bg-black flex justify-center">
         <video ref={videoRef} className="bg-slate-700"></video>
       </div>
+      {imageDataUrl && (
+        <div>
+          <h3>Captured Image:</h3>
+          <img src={imageDataUrl} alt="Captured frame" />
+        </div>
+      )}
       <div className="bg-black flex justify-center">
         <img
           src={VITE_STREAM_LINK}
