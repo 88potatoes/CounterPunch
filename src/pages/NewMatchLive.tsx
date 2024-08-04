@@ -8,7 +8,6 @@ import { useQuery } from "@tanstack/react-query";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
-const VITE_STREAM_LINK = import.meta.env.VITE_STREAM_LINK;
 /**
  * The page for the Main view with the camera and the live scoring
  * @returns
