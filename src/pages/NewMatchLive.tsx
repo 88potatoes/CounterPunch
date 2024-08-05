@@ -15,13 +15,13 @@ import { useLocation } from "react-router-dom";
 //
 export default function NewMatchLive() {
   const videoRef: MutableRefObject<HTMLVideoElement | null> = useRef(null);
+  const canvasRef: MutableRefObject<HTMLCanvasElement | null> = useRef(null);
   const [fighter1thrown, setFighter1thrown] = useState(0);
   const [fighter1hits, setFighter1hits] = useState(0);
   const [fighter2thrown, setFighter2thrown] = useState(0);
   const [fighter2hits, setFighter2hits] = useState(0);
-  // const [fighter1, setFighter1] = useState<Fighter | null>(null);
-  // const [fighter2, setFighter2] = useState<Fighter | null>(null);
   const [streamOn, setStreamOn] = useState(false);
+  const [predictions, setPredictions] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const [matchInfo, setMatchInfo] = useState<PrimitiveMatch | null>(null);
@@ -111,27 +111,71 @@ export default function NewMatchLive() {
           );
           const frame = canvas.toDataURL("image/jpeg");
 
-          console.log("Sending frame:", frame);
-
           apiClient.post("/process_frame", {
             image: frame,
+          }).then(response => {
+            setPredictions(response.data.detections);
           });
         }
       }
     }
 
     // Send frames at 30 FPS
-    const intervalId = setInterval(sendFrame, 1000 / 30);
+    const intervalId = setInterval(sendFrame, 1000/ 30);
 
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
   }, [location.state]);
 
   useEffect(() => {
-    console.log(matchInfo?.fighter1.id);
-    console.log(matchInfo?.fighter2.id);
-  }, [matchInfo]);
-
+    function drawPredictions() {
+      // Console log predictions
+      console.log(predictions);
+      if (canvasRef.current && videoRef.current) {
+        const context = canvasRef.current.getContext("2d");
+        if (context) {
+          context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+          predictions.forEach(prediction => {
+            const { x, y, width, height, class: label, confidence } = prediction;
+            
+            // Set colors based on class
+            switch (label) {
+              case 'people':
+                context.strokeStyle = "blue";
+                context.fillStyle = "blue";
+                break;
+              case 'punch':
+                context.strokeStyle = "red";
+                context.fillStyle = "red";
+                break;
+              case 'pad':
+                context.strokeStyle = "white";
+                context.fillStyle = "white";
+                break;
+              case 'gloves':
+                context.strokeStyle = "blue";
+                context.fillStyle = "blue";
+                break;
+              case 'miss':
+                context.strokeStyle = "black";
+                context.fillStyle = "black";
+                break;
+              default:
+                context.strokeStyle = "green";
+                context.fillStyle = "green";
+                break;
+            }
+            
+            context.lineWidth = 2;
+            context.strokeRect(x, y, width, height);
+            context.font = "16px Arial";
+            context.fillText(`${label} (${(confidence * 100).toFixed(2)}%)`, x, y - 10);
+          });
+        }
+      }
+    }
+    drawPredictions();
+  }, [predictions]);
   const {
     isLoading: isLoadingF1,
     error: error1,
@@ -180,15 +224,10 @@ export default function NewMatchLive() {
           </h1>
         </div>
       </div>
-      <div className="bg-black flex justify-center">
+      <div className="bg-black flex justify-center relative">
         <video ref={videoRef} className="bg-slate-700"></video>
+        <canvas ref={canvasRef} className="absolute top-0 left-0" width="640" height="480"></canvas>
       </div>
-      {/* <div className="bg-black flex justify-center">
-        <img
-          src={VITE_STREAM_LINK}
-          alt="Live Video Feed"
-        />
-      </div> */}
       <div className="flex flex-row justify-around mx-3">
         <Card className="p-3 mt-3">
           <FighterCard fighter={fighter1} />
@@ -198,18 +237,14 @@ export default function NewMatchLive() {
               <CardTitle className="text-sm">Punches Thrown</CardTitle>
               <div>
                 <Button onClick={incrementF1thrown}>+</Button>
-                <Button onClick={decrementF1thrown} className="mx-1">
-                  -
-                </Button>
+                <Button onClick={decrementF1thrown} className="mx-1">-</Button>
               </div>
             </div>
             <div className="mt-2">
               <CardTitle className="text-sm">Punches Hit</CardTitle>
               <div>
                 <Button onClick={incrementF1hits}>+</Button>
-                <Button onClick={decrementF1hits} className="mx-1">
-                  -
-                </Button>
+                <Button onClick={decrementF1hits} className="mx-1">-</Button>
               </div>
             </div>
           </div>
@@ -223,18 +258,14 @@ export default function NewMatchLive() {
               <CardTitle className="text-sm">Punches Thrown</CardTitle>
               <div>
                 <Button onClick={incrementF2thrown}>+</Button>
-                <Button onClick={decrementF2thrown} className="mx-1">
-                  -
-                </Button>
+                <Button onClick={decrementF2thrown} className="mx-1">-</Button>
               </div>
             </div>
             <div className="mt-2">
               <CardTitle className="text-sm">Punches Hit</CardTitle>
               <div>
                 <Button onClick={incrementF2hits}>+</Button>
-                <Button onClick={decrementF2hits} className="mx-1">
-                  -
-                </Button>
+                <Button onClick={decrementF2hits} className="mx-1">-</Button>
               </div>
             </div>
           </div>
@@ -248,10 +279,7 @@ export default function NewMatchLive() {
             </Button>
           )}
           {!streamOn && (
-            <Button
-              className="bg-green-700 text-white"
-              onClick={toggleStreamOn}
-            >
+            <Button className="bg-green-700 text-white" onClick={toggleStreamOn}>
               Start CounterPunch
             </Button>
           )}
