@@ -201,10 +201,12 @@ export default function NewMatchLive() {
   }
 
   if (error1 || error2) {
+    navigate('/home');
     return <div>Error loading fighter data</div>;
   }
 
   if (!fighter1 || !fighter2) {
+    navigate('/home');
     return <div>No fighter data available</div>;
   }
 
